@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Note</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Edit Note</h1>
+    <form method="post" th:action="@{'/workspaces/' + ${workspace.getId()} + '/notes/' + ${note.getId()}}">
+        <!-- Populate form fields with existing note data -->
+        <div>
+            <label for="newNoteText">Text:</label>
+            <input type="text" id="newNoteText" name="newNoteText" th:value="${note.getText()}" required>
+        </div>
+        <div>
+            <label for="newNoteTag">Tag:</label>
+            <input type="text" id="newNoteTag" name="newNoteTag" th:value="${note.getTag()}" required>
+        </div>
+        <div>
+            <input type="hidden" name="_method" value="PUT"> <!-- Добавьте это скрытое поле -->
+            <button type="submit">Save Changes</button>
+        </div>
+    </form>
+    <a id="back-to-notes" th:href="@{ '/workspaces/' + ${workspace.getId()} + '/notes' }">Back to Workspace</a>
+</div>
+</body>
+</html>

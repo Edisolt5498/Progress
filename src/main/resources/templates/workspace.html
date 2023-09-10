@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns:form="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Workspace Notes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+        }
+        h2 {
+            margin-top: 20px;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Notes Section Styles */
+        #notes {
+            margin-top: 20px;
+        }
+        #notes ul {
+            list-style: none;
+        }
+        #notes li {
+            background-color: #f7f7f7;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .delete-note {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        .delete-note:hover {
+            background-color: #7a0404;
+        }
+
+        .edit-note {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        .edit-note:hover {
+            background-color: #81878d;
+        }
+
+        /* Add Note Section Styles */
+        #add-note {
+            margin-top: 20px;
+        }
+        #add-note form {
+            background-color: #f7f7f7;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #add-note label,
+        #add-note input,
+        #add-note textarea {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .add-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .add-button:hover {
+            background-color: #81878d;
+        }
+
+        /* Workspace Actions Section Styles */
+        #workspace-actions {
+            margin-top: 20px;
+        }
+        .delete-workspace,
+        .edit-workspace {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .edit-workspace:hover {
+            background-color: #81878d;
+        }
+        .delete-workspace:hover {
+            background-color: #7a0404;
+        }
+
+        /* Back to Workspaces Link Styles */
+        #back-to-workspaces {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #007bff;
+            text-decoration: none;
+        }
+        #back-to-workspaces:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h2>Workspace:  <span th:text="${workspace.getName()}"></span></h2>
+        <p>Users:
+            <span th:each="user : ${workspace.getUsers()}" th:text="${user.getUsername()}"></span>
+        </p>
+    </header>
+
+
+
+    <section id="add-note">
+        <h2>Add New Note</h2>
+        <form th:action="@{'/workspaces/' + ${workspace.getId()} + '/notes/'}" method="post" id="noteForm">
+            <label for="text">Text:</label>
+            <input type="text" id="text" name="text" required>
+            <label for="tag">Tag:</label>
+            <input type="text" id="tag" name="tag" required>
+            <input type="hidden" id="startTime" name="startTime" value=""> <!-- Добавьте скрытое поле для startTime -->
+            <input type="hidden" id="endTime" name="endTime" value="">     <!-- Добавьте скрытое поле для endTime -->
+            <input type="hidden" id="duration" name="duration" value="">   <!-- Добавьте скрытое поле для duration -->
+            <button class="add-button" type="button" id="startTimerButton" onclick="startTimer()">Start</button>
+            <button class="add-button" type="button" id="stopTimerButton" style="display: none;" onclick="stopTimer()">Stop</button>
+            <button class="add-button" type="submit" id="addNoteButton" style="display: none;">Add Note</button>
+        </form>
+        <p id="timerDisplay">Timer: <span id="timerValue">00:00:00</span></p>
+    </section>
+
+    <script>
+        let timerInterval;
+        let startTime;
+        let endTime;
+
+        function startTimer() {
+            startTime = new Date().getTime();
+            timerInterval = setInterval(updateTimer, 1000);
+            document.getElementById("startTimerButton").style.display = "none";
+            document.getElementById("stopTimerButton").style.display = "block";
+            document.getElementById("addNoteButton").style.display = "none";
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            endTime = new Date().getTime();
+            document.getElementById("startTimerButton").style.display = "block";
+            document.getElementById("stopTimerButton").style.display = "none";
+            document.getElementById("addNoteButton").style.display = "block";
+            // Заполните форму с данными о времени
+            document.getElementById("startTime").value = startTime; // Установите значение startTime
+            document.getElementById("endTime").value = endTime;     // Установите значение endTime
+            document.getElementById("duration").value = endTime - startTime;
+        }
+
+        function updateTimer() {
+            const timerElement = document.getElementById("timerValue");
+            const now = new Date();
+
+            // Обновляем отображение времени
+            const elapsedTimeMilliseconds = now - startTime;
+            const elapsedSeconds = Math.floor(elapsedTimeMilliseconds / 1000);
+            const formattedTime = formatTime(elapsedSeconds);
+            timerElement.textContent = formattedTime;
+        }
+
+        function formatTime(timeInSeconds) {
+            const hours = Math.floor(timeInSeconds / 3600);
+            const minutes = Math.floor((timeInSeconds % 3600) / 60);
+            const seconds = timeInSeconds % 60;
+            return `${hours}:${minutes}:${seconds}`;
+        }
+    </script>
+
+
+
+
+    <section id="notes">
+        <h2>Notes</h2>
+        <ul>
+            <li th:each="note : ${workspace.getNotes()}">
+                <p>Text: <span th:text="${note.getText()}"></span></p>
+                <p>Tag: <span th:text="${note.getTag()}"></span></p>
+                <p th:if="${note.getDuration() != null}">Time: <span th:text="${note.getDuration()}"></span></p>
+                <form method="get" th:action="@{'/workspaces/' + ${workspace.getId()} + '/notes/' + ${note.getId()}}"
+                      style="display: inline;">
+                    <button class="edit-note" type="submit">Edit</button>
+                </form>
+
+                <form method="post" th:action="@{'/workspaces/' + ${workspace.getId()} + '/notes/' + ${note.getId()}}">
+                    <input type="hidden" name="_method" value="DELETE"> <!-- Добавьте это скрытое поле -->
+                    <button class="delete-note" type="submit">Delete</button>
+                </form>
+            </li>
+            <!--@{/workspaces/{workspaceId}(workspaceId=${workspace.getId()})}-->
+        </ul>
+    </section>
+
+    <section id="workspace-actions">
+        <h2>Workspace Actions</h2>
+        <form method="get" th:action="@{ '/workspaces/' + ${workspace.getId()} + '/edit/'}" style="display: inline;">
+            <button class="edit-workspace" type="submit">Edit Workspace</button>
+        </form>
+        <h2></h2>
+        <form method="post" th:action="@{ '/workspaces/' + ${workspace.getId()} }" style="display: inline;">
+            <input type="hidden" name="_method" value="DELETE"> <!-- Добавьте это скрытое поле -->
+            <button class="delete-workspace" type="submit">Delete Workspace</button>
+        </form>
+    </section>
+
+
+    <a id="back-to-workspaces" href="/workspaces">Back to Workspaces</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Workspace</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+        }
+        h2 {
+            margin-top: 20px;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        form {
+            margin-top: 2px;
+            padding: 4px;
+            background-color: #f7f7f7;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Style the form labels */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        /* Style the form input fields */
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        /* Style the form submit button */
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        /* Style the workspace buttons */
+        .workspaces button {
+            background-color: #0056b3; /* Darker blue color */
+            color: #fff; /* White text color */
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            padding: 10px;
+            width: 95%;
+        }
+
+        .workspaces button:hover {
+            background-color: #003f80; /* Darker blue on hover */
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>User Page</h1>
+
+    <!-- Display user information if user is not null -->
+
+    <th:block th:if="${user != null}">
+        <h2>Information</h2>
+        <p><strong>Username:</strong> <span th:text="${user.getUsername()}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${user.getEmail()}"></span></p>
+        <!-- Add more user properties as needed -->
+
+        <h2>Workspaces</h2>
+        <form method="post" action="/workspaces">
+            <label for="workspaceName">New workspace Name:</label>
+            <input type="text" id="workspaceName" name="workspaceName" required>
+            <button type="submit">Create Workspace</button>
+        </form>
+        <ul>
+            <li th:each="workspace : ${user.getWorkspaces()}" class="workspace-item">
+                <!-- Display workspace names as buttons -->
+                <a th:href="@{/workspaces/{workspaceId}(workspaceId=${workspace.getId()})}" class="workspaces">
+                    <button>
+                        <span th:text="${workspace.getName()}"></span>
+                    </button>
+                </a>
+            </li>
+        </ul>
+    </th:block>
+
+    <!-- Display a message if user is null -->
+
+    <a href="/logout">Log out</a>
+    <a href="/">Home Page</a>
+</div>
+</body>
+</html>
