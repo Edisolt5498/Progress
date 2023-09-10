@@ -1,8 +1,8 @@
 CREATE TABLE my_db_progress.users (
   id int NOT NULL AUTO_INCREMENT,
-  username varchar(255),
+  username varchar(255) NOT NULL,
   email varchar(255),
-  password varchar(255) NULL,
+  password varchar(255) NOT NULL,
   active boolean,
   PRIMARY KEY (id)
 );
