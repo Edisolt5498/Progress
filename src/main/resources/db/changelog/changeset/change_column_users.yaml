@@ -1,0 +1,10 @@
+databaseChangeLog:
+  -  changeSet:
+       id:  change-column-users
+       author: Edisolt
+       changes:
+         -  renameColumn:
+              tableName: users
+              columnDataType: varchar(50)
+              newColumnName: fullname
+              oldColumnName: username

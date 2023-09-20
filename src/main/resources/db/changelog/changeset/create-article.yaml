@@ -1,0 +1,27 @@
+databaseChangeLog:
+  -  changeSet:
+       id:  create-article
+       author: Edisolt
+       changes:
+         -  createTable:
+              tableName: articles
+              columns:
+                - column:
+                    name: id
+                    type: int
+                    autoIncrement: true
+                    constraints:
+                      primaryKey: true
+                      nullable: false
+                - column:
+                    name: text
+                    type: varchar(255)
+                    constraints:
+                      nullable: false
+                - column:
+                    name: user_id
+                    type: int
+                    constraints:
+                      foreignKeyName: user_article_fk
+                      referencedTableName: users
+                      referencedColumnNames: id

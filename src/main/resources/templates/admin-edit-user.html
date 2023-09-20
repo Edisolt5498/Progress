@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+        form {
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="checkbox"] {
+            margin-top: 5px;
+        }
+        button.btn-update {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        a.btn-cancel {
+            background-color: #ccc;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        button.btn-update:hover {
+            background-color: #0056b3;
+        }
+        a.btn-cancel:hover {
+            background-color: #999;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Edit User</h1>
+    <form th:action="@{'/users/' + ${user.getId()}}" method="POST">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="newUsername" placeholder="Enter username" required th:value="${user.username}">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="newEmail" placeholder="Enter email" required th:value="${user.email}">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="newPassword" placeholder="Enter new password">
+        </div>
+        <div class="form-group">
+            <label>Roles</label>
+            <div th:each="role : ${T(com.edisolt.progress.servingwebcontent.entity.Role).values()}"
+                 class="form-check">
+                <input type="checkbox" id="role" name="roles" th:id="${role}" th:value="${role}" th:checked="${user.roles != null and user.roles.contains(role)}">
+                <label th:for="${role}" th:text="${role.getDisplayName()}"></label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="active">Active</label>
+            <input type="checkbox" id="active" name="active" th:checked="${user.active}">
+        </div>
+        <div class="form-group">
+            <label for="emailConfirmation">Email confirmation</label>
+            <input type="checkbox" id="emailConfirmation" name="emailConfirmation" th:checked="${user.emailConfirmation}">
+        </div>
+        <div class="form-group">
+            <input type="hidden" name="_method" value="PUT"> <!-- Добавьте это скрытое поле -->
+            <button type="submit" class="btn-update">Update</button>
+            <a href="/users/all" class="btn-cancel">Cancel</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

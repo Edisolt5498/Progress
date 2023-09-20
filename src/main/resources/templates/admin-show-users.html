@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>User List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #007bff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #007bff;
+      color: #fff;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    .role {
+      text-transform: uppercase;
+    }
+    .user-link {
+      text-decoration: none;
+      color: #007bff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>User List</h1>
+  <table>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Roles</th>
+    </tr>
+    <tr th:each="user : ${users}">
+      <td>
+        <a th:text="${user.username}" th:href="@{'/users/' + ${user.id}}" class="user-link"></a>
+      </td>
+      <td th:text="${user.email}">Email</td>
+      <td>
+        <ul>
+          <li th:each="role : ${user.roles}" class="role" th:text="${role}"></li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

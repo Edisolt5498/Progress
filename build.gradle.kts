@@ -21,7 +21,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-mail")
 
-    //implementation("org.flywaydb:flyway-core:9.22.0")
+    implementation("org.liquibase:liquibase-core:4.23.1")
+
 
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 

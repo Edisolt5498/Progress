@@ -38,8 +38,7 @@ public class NoteController {
                                      @PathVariable Note note,
                                      Model model) {
         workspaceService.findWorkspaceFromDbByUser(user, workspace);//Throwable
-        model.addAttribute("user"
-                , noteService.findNoteFromDbByWorkspace(workspace, note));
+
         return "edit-note";
     }
 

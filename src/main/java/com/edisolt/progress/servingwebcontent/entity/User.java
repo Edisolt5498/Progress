@@ -35,6 +35,7 @@ public class User implements UserDetails {
     )
     private List<Workspace> workspaces;
     private boolean active;
+    private boolean emailConfirmation;
 
     public void addWorkspace (Workspace workspace) {
         if (workspaces == null) workspaces = new ArrayList<>();

@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/create-some-table.yaml
+  - include:
+      file: db/changelog/changeset/create-article.yaml
+  - include:
+      file: db/changelog/changeset/change_column_users.yaml
+  - include:
+      file: db/changelog/changeset/change_column_users_two.yaml
