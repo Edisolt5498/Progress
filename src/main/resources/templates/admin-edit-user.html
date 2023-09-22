@@ -95,16 +95,18 @@
         </div>
         <div class="form-group">
             <label for="active">Active</label>
-            <input type="checkbox" id="active" name="active" th:checked="${user.active}">
+            <input type="checkbox" id="active" name="active" th:checked="${user.active}" value="true">
+            <input type="hidden" name="active" value="false">
         </div>
         <div class="form-group">
             <label for="emailConfirmation">Email confirmation</label>
-            <input type="checkbox" id="emailConfirmation" name="emailConfirmation" th:checked="${user.emailConfirmation}">
+            <input type="checkbox" id="emailConfirmation" name="emailConfirmation" th:checked="${user.emailConfirmation}" value="true">
+            <input type="hidden" name="emailConfirmation" value="false">
         </div>
         <div class="form-group">
             <input type="hidden" name="_method" value="PUT"> <!-- Добавьте это скрытое поле -->
             <button type="submit" class="btn-update">Update</button>
-            <a href="/users/all" class="btn-cancel">Cancel</a>
+            <a href="/users" class="btn-cancel">Cancel</a>
         </div>
     </form>
 </div>

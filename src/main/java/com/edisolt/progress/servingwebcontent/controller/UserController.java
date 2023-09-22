@@ -23,7 +23,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping()
+    @GetMapping("/add")
     public String addUserMap () {
         return "admin-add-user";
     }
@@ -66,7 +66,7 @@ public class UserController {
         return "admin-edit-user";
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public String users (Model model) {
         model.addAttribute("users", userRepository.findAll());
         return "admin-show-users";
