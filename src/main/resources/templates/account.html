@@ -123,7 +123,7 @@
         <ul>
             <li th:each="workspace : ${user.getWorkspaces()}" class="workspace-item">
                 <!-- Display workspace names as buttons -->
-                <a th:href="@{/workspaces/${workspace.getId()}}" class="workspaces">
+                <a th:href="@{'/workspaces/' + ${workspace.getId()}}" class="workspaces">
                     <button>
                         <span th:text="${workspace.getName()}"></span>
                     </button>

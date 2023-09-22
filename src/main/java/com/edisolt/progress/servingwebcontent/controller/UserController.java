@@ -29,13 +29,20 @@ public class UserController {
     }
 
     @PostMapping()
-    public String regNewUser (@RequestParam String username, @RequestParam String password
-            , @RequestParam String email) {
+    public String regNewUser (@RequestParam String username,
+                              @RequestParam String password,
+                              @RequestParam String email,
+                              Model model) {
         User user = new User(username, password, email);
         user.setRoles(Collections.singleton(Role.USER));
 
-        userService.addNewUserToDb(user);
+        String message;
 
+        if (userService.addNewUserToDb(user)) {
+            message = "User successfully registered!";
+        } else message = "User already exists!";
+
+        model.addAttribute("message", message);
         return "redirect:/users";
     }
 
