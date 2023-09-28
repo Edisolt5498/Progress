@@ -4,7 +4,6 @@ import com.edisolt.progress.servingwebcontent.entity.Role;
 import com.edisolt.progress.servingwebcontent.entity.User;
 import com.edisolt.progress.servingwebcontent.ropository.UserRepository;
 import com.edisolt.progress.servingwebcontent.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -55,13 +54,17 @@ public class UserController {
                               @RequestParam boolean emailConfirmation,
                               @RequestParam Set<Role> roles,
                               Model model) {
+
+        if (newPassword != null && !newPassword.isEmpty()) user.setPassword(newPassword);
+
         user.setUsername(newUsername);
         user.setEmail(newEmail);
-        user.setRoles(roles);
         user.setActive(active);
         user.setEmailConfirmation(emailConfirmation);
-        if (newPassword != null && !newPassword.isEmpty()) user.setPassword(newPassword);
+        user.setRoles(roles);
+
         userService.updateUserToDb(user);
+
         model.addAttribute("user", user);
         return "admin-edit-user";
     }

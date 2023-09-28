@@ -21,5 +21,5 @@ public enum Role implements GrantedAuthority {
     public String getDisplayName() {
         return displayName;
     }
-    }
+}
 
